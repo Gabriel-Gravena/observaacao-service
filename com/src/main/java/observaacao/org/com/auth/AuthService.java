@@ -3,7 +3,6 @@ package observaacao.org.com.auth;
 import observaacao.org.com.auth.dto.LoginRequest;
 import observaacao.org.com.auth.dto.RegisterRequest;
 import observaacao.org.com.auth.dto.AuthResponse;
-import observaacao.org.com.auth.dto.TokenResponse;
 import observaacao.org.com.auth.jwt.JwtService;
 import observaacao.org.com.common.enums.Role;
 import observaacao.org.com.user.User;
@@ -48,10 +47,10 @@ public class AuthService {
 
         String token = jwtService.generateToken(user);
 
-        return new AuthResponse(user.getId(), token);
+        return new AuthResponse(user, token);
     }
 
-    public TokenResponse signIn(LoginRequest request){
+    public AuthResponse signIn(LoginRequest request){
         String reqEmail = request.email();
         String reqPassword = request.password();
 
@@ -69,7 +68,7 @@ public class AuthService {
 
         String token = jwtService.generateToken(user);
 
-        return new TokenResponse(token);
+        return new AuthResponse(user, token);
     }
 
 }

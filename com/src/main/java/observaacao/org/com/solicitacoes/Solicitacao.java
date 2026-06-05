@@ -51,7 +51,7 @@ public class Solicitacao {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "cidadao_id")
-    private User cidadao;
+        private User cidadao;
 
     private LocalDateTime prazoAlvo;
     private LocalDateTime createdAt;

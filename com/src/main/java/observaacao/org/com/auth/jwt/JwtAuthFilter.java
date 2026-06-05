@@ -18,10 +18,16 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final JwtCookieService jwtCookieService;
     private final UserService userService;
 
-    public JwtAuthFilter(JwtService jwtService, UserService userService) {
+    public JwtAuthFilter(
+            JwtService jwtService,
+            JwtCookieService jwtCookieService,
+            UserService userService
+    ) {
         this.jwtService = jwtService;
+        this.jwtCookieService = jwtCookieService;
         this.userService = userService;
     }
 
@@ -31,16 +37,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     HttpServletResponse response,
                     FilterChain filterChain
     ) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String token = jwtCookieService.extractTokenFromCookies(request);
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = authHeader.substring(7);
-
-        if(!jwtService.isTokenValid(token)){
+        if(token == null || !jwtService.isTokenValid(token)){
             filterChain.doFilter(request, response);
             return;
         }

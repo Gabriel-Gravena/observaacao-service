@@ -1,9 +1,9 @@
 package observaacao.org.com.auth.dto;
 
-import java.util.UUID;
+import observaacao.org.com.user.User;
 
 public record AuthResponse(
-        UUID userId,
+        User user,
         String token
 ) {
 }
